@@ -1,0 +1,13 @@
+{% extends "admin/base.html" %}
+
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans 'OpenCRM admin' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'OpenCRM administration' %}</h1>
+{% endblock %}
+{% block nav-global %}<a href="{% url 'avatar_change' %}">Change your avatar</a>
+{% load avatar_tags %}
+{% avatar user 30 %}
+{% endblock %}
