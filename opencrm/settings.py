@@ -1,5 +1,10 @@
 # Django settings for opencrm project.
 
+# -*- coding: utf-8 -*-
+import os
+gettext = lambda s: s
+PROJECT_PATH = os.path.split(os.path.abspath(os.path.dirname(__file__)))[0]
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -50,8 +55,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = '/home/prjs/opencrm/opencrm/opencrm/media/'
-
+MEDIA_ROOT = os.path.join(PROJECT_PATH, "media")
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
@@ -61,7 +65,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/home/prjs/opencrm/opencrm/opencrm/static/'
+STATIC_ROOT = os.path.join(PROJECT_PATH, "static")
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
@@ -76,8 +80,8 @@ STATICFILES_DIRS = (
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (
-	'django.contrib.staticfiles.finders.FileSystemFinder',
 	'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+	'django.contrib.staticfiles.finders.FileSystemFinder',	
 #	'django.contrib.staticfiles.finders.DefaultStorageFinder',
 	'pipeline.finders.PipelineFinder',
 #	'less.finders.LessFinder',
@@ -104,7 +108,13 @@ MIDDLEWARE_CLASSES = (
 	# Uncomment the next line for simple clickjacking protection:
 	# 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'django.middleware.gzip.GZipMiddleware',
-	'pipeline.middleware.MinifyHTMLMiddleware',
+	'pipeline.middleware.MinifyHTMLMiddleware',    
+	'django.middleware.locale.LocaleMiddleware',
+	'django.middleware.doc.XViewMiddleware',
+#	'cms.middleware.page.CurrentPageMiddleware',
+#	'cms.middleware.user.CurrentUserMiddleware',
+#	'cms.middleware.toolbar.ToolbarMiddleware',
+#	'cms.middleware.language.LanguageCookieMiddleware',
 )
 
 ROOT_URLCONF = 'opencrm.urls'
@@ -116,6 +126,7 @@ TEMPLATE_DIRS = (
 	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
 	# Always use forward slashes, even on Windows.
 	# Don't forget to use absolute paths, not relative paths
+#	os.path.join(PROJECT_PATH, "templates"),
 )
 
 INSTALLED_APPS = (
@@ -124,7 +135,8 @@ INSTALLED_APPS = (
 	'django.contrib.sessions',
 	'django.contrib.sites',
 	'django.contrib.messages',
-	'django.contrib.staticfiles',    
+	'django.contrib.staticfiles',
+	'grappelli',    
 	# Uncomment the next line to enable the admin:
 	'django.contrib.admin',
 	# Uncomment the next line to enable admin documentation:
@@ -136,23 +148,44 @@ INSTALLED_APPS = (
 	'allauth.account',
 	'allauth.socialaccount',
 	# ... include the providers you want to enable:
-	'allauth.socialaccount.providers.bitly',
-	'allauth.socialaccount.providers.dropbox',
-	'allauth.socialaccount.providers.facebook',
-	'allauth.socialaccount.providers.github',
+#	'allauth.socialaccount.providers.bitly',
+#	'allauth.socialaccount.providers.dropbox',
+#	'allauth.socialaccount.providers.facebook',
+#	'allauth.socialaccount.providers.github',
 	'allauth.socialaccount.providers.google',
 #	'allauth.socialaccount.providers.instagram',
-	'allauth.socialaccount.providers.linkedin',
-	'allauth.socialaccount.providers.openid',
-	'allauth.socialaccount.providers.persona',
-	'allauth.socialaccount.providers.soundcloud',
-	'allauth.socialaccount.providers.stackexchange',
-	'allauth.socialaccount.providers.twitch',
-	'allauth.socialaccount.providers.twitter',
-	'allauth.socialaccount.providers.vimeo',
-	'allauth.socialaccount.providers.vk',
-	'allauth.socialaccount.providers.weibo',
+#	'allauth.socialaccount.providers.linkedin',
+#	'allauth.socialaccount.providers.openid',
+#	'allauth.socialaccount.providers.persona',
+#	'allauth.socialaccount.providers.soundcloud',
+#	'allauth.socialaccount.providers.stackexchange',
+#	'allauth.socialaccount.providers.twitch',
+#	'allauth.socialaccount.providers.twitter',
+#	'allauth.socialaccount.providers.vimeo',
+#	'allauth.socialaccount.providers.vk',
+#	'allauth.socialaccount.providers.weibo',
 	'avatar',
+#	'cms',
+#	'mptt',
+#	'menus',
+#	'sekizai',
+#	'cms.plugins.flash',
+#	'cms.plugins.googlemap',
+#	'cms.plugins.link',
+#	'cms.plugins.snippet',
+#	'cms.plugins.text',
+#	'cms.plugins.twitter',
+#	'cms.plugins.file',
+#	'cms.plugins.picture',
+#	'cms.plugins.teaser',
+#	'cms.plugins.video', 
+#	'filer',
+#	'cmsplugin_filer_file',
+#	'cmsplugin_filer_folder',
+#	'cmsplugin_filer_image',
+#	'cmsplugin_filer_teaser',
+#	'cmsplugin_filer_video',
+#	'reversion',
 )
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
@@ -204,15 +237,16 @@ PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.yuglify.YuglifyCompressor'
 
-TEMPLATE_DIRS = (
-	'/home/prjs/opencrm/opencrm/opencrm/templates', # Change this to your own directory.
-)
-
 TEMPLATE_CONTEXT_PROCESSORS = (
 	"django.contrib.auth.context_processors.auth",
 	"django.core.context_processors.request",
 	"allauth.account.context_processors.account",
 	"allauth.socialaccount.context_processors.socialaccount",
+#	'django.core.context_processors.i18n',
+#	'django.core.context_processors.media',
+#	'django.core.context_processors.static',
+#	'cms.context_processors.media',
+#	'sekizai.context_processors.sekizai',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -235,3 +269,5 @@ SOCIALACCOUNT_AVATAR_SUPPORT = 'avatars'
 #AVATAR_RESIZE_METHOD = 'Image.BILINEAR'
 
 AUTO_GENERATE_AVATAR_SIZES = (30,)
+
+GRAPPELLI_ADMIN_TITLE = 'OpenCRM'

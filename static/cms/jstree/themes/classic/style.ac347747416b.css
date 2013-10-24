@@ -1,0 +1,48 @@
+.tree .tree-classic li.open {
+	background:url("minus.0b43afca8056.gif") 2px 5px no-repeat;
+}
+.tree .tree-classic li.closed {
+	background:url("plus.7850fac01016.gif") 2px 5px no-repeat;
+}
+.tree .tree-classic #dragged li.open {
+	background:url("plus.7850fac01016.gif") 2px 5px no-repeat;
+}
+
+.tree .tree-classic li.open a {
+	background-image:url("folderopen.42e9b3ae01e8.gif");
+}
+.tree .tree-classic li.closed a {
+	background-image:url("folder.cf5950d835f3.gif");
+}
+.tree .tree-classic li.leaf a {
+	background-image:url("folder.cf5950d835f3.gif");
+}
+
+.tree .tree-classic li a {
+	-moz-border-radius:0;
+}
+
+.tree .tree-classic li a:hover {
+	background-color:white;
+	border-color:white;
+}
+.tree .tree-classic li a.clicked,
+.tree .tree-classic li span.clicked {
+	background-color:navy;
+	border-color:navy;
+	color:white;
+}
+
+.rtl .tree-classic li.open {
+	background-position:right 5px;
+	margin-right:-3px;
+	padding-right:19px;
+}
+.rtl .tree-classic li.closed {
+	background-position:right 5px;
+	margin-right:-3px;
+	padding-right:19px;
+}
+.rtl .tree-classic #dragged li.open {
+	background-position: right 5px;
+}
